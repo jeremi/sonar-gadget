@@ -9,6 +9,8 @@ Compatibility
 =============
 
 The gadgets have been tested in (it doesn't mean it doesn't work in other configuration)
+
+
 * Browser
     * IE 7
     * Firefox 3.5
