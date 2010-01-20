@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright (C) 2009 eXo Platform SAS.
+
+    This is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation; either version 2.1 of
+    the License, or (at your option) any later version.
+
+    This software is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this software; if not, write to the Free
+    Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+    02110-1301 USA, or see the FSF site: http://www.fsf.org.
+
+-->
+<Module>
+    <ModulePrefs author="Jeremi Joslin - eXo Platform"
+                 title="Sonar - Rules compliance"
+                 directory_title="Sonar - Rules compliance"
+                 title_url="http://www.exoplatform.com"
+                 description="Sonar gadget.">
+
+        <Require feature="dynamic-height" />
+        <Require feature="setprefs"/>
+        <Require feature="settitle"/>
+    </ModulePrefs>
+    <UserPref name="sonar_url" datatype="string" default_value="http://sonar.exoplatform.org/"/>
+    <UserPref name="sonar_project" datatype="string"/>
+    <UserPref name="is_configured" datatype="hidden" default_value="0"/>
+    <Content type="html">
+      <![CDATA[
+
+        <link href="style.css" media="all" rel="stylesheet" type="text/css" />
+
+        <style>
+        #body .tip span {
+            margin-left:140px;
+            margin-top:-100px;
+        }
+
+        .tip:hover {
+            text-decoration:none !important;
+        }
+        </style>
+
+	    <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="sonar.js"></script>
+		<script type="text/javascript">
+            function update_metrics() {
+                var metrics = "violations_density,efficiency,maintainability,portability,reliability,usability";
+                metrics += ",violations,blocker_violations,critical_violations,major_violations,minor_violations,info_violations";
+
+                sonar.GetMetrics(metrics, function(res) {
+                    var resource = res.data[0];
+                    var prefs = new gadgets.Prefs();
+                    var sonar_url = prefs.getString("sonar_url");
+                    $("#resource_name").text(resource.name);
+                    $("#resource_description").text(resource.description);
+
+                    var values = {};
+                    for (var i = 0; i < resource.msr.length; i++) {
+                        var metric = resource.msr[i];
+                        $("#m_" + metric.key).text(metric.frmt_val);
+                        $("#l_" + metric.key).attr("href", sonar_url + "drilldown/measures/" + resource.id + "?metric=" + metric.key);
+                        if (metric["var"] != 0) {
+                            $("#t_" + metric.key).attr("src", sonar_url + "images/tendency/" + metric["var"] + "-black-small.png");
+                            $("#t_" + metric.key).show();
+                        } else {
+                            $("#t_" + metric.key).hide();
+                        }
+                        values[metric.key] = metric.frmt_val;
+                    }
+
+                    var chart_url = "/chart?ck=xradar&w=140&h=110&c=777777|F8A036&m=100&g=0.25&l=Eff.,Mai.,Por.,Rel.,Usa.&v=";
+
+                    //remove the trailing '%' and construct the url
+                    chart_url += values["efficiency"].substring(0,values["efficiency"].length - 1);
+                    chart_url += "," + values["maintainability"].substring(0,values["maintainability"].length - 1); 
+                    chart_url += "," + values["portability"].substring(0,values["portability"].length - 1);
+                    chart_url += "," + values["reliability"].substring(0,values["reliability"].length - 1);
+                    chart_url += "," + values["usability"].substring(0,values["usability"].length - 1);
+                    $("#chart").attr("src", sonar_url + chart_url);
+
+                    //Violation links
+                    $("#l_chart").attr("href", sonar_url + 'drilldown/violations/' + resource.id + "?filter=category");
+
+                    $("#lv_violations").attr("href", sonar_url + 'drilldown/violations/' + resource.id);
+                    $("#lv_blocker_violations").attr("href", sonar_url + 'drilldown/violations/' + resource.id + "?priority=BLOCKER");
+                    $("#lv_critical_violations").attr("href", sonar_url + 'drilldown/violations/' + resource.id + "?priority=CRITICAL");
+                    $("#lv_major_violations").attr("href", sonar_url + 'drilldown/violations/' + resource.id + "?priority=MAJOR");
+                    $("#lv_minor_violations").attr("href", sonar_url + 'drilldown/violations/' + resource.id + "?priority=MINOR");
+                    $("#lv_info_violations").attr("href", sonar_url + 'drilldown/violations/' + resource.id + "?priority=INFO");
+
+                    $("img.blocker").attr("src", sonar_url + "images/priority/BLOCKER.gif");
+                    $("img.critical").attr("src", sonar_url + "images/priority/CRITICAL.gif");
+                    $("img.major").attr("src", sonar_url + "images/priority/MAJOR.gif");
+                    $("img.minor").attr("src", sonar_url + "images/priority/MINOR.gif");
+                    $("img.info").attr("src", sonar_url + "images/priority/INFO.gif");
+
+                    gadgets.window.adjustHeight($(document).height());
+                }, {includetrends: "true"});
+            }
+
+
+
+		    $(function() {
+		        $("#preferences").bind("finish_edit", function(){update_metrics();});
+
+                if (!$.support.cssFloat) {
+                    $("a.tip").removeClass("tip");
+		        }
+
+		        var prefs = new gadgets.Prefs();
+		        $("#edit").click(sonar.EditPreferences);
+
+		        if (prefs.getString("is_configured") === "0"){
+                    sonar.EditPreferences();
+                } else {
+                    update_metrics();
+                }
+             });
+		</script>
+		<div id="container">
+            <div id="body">
+            <h1 id="resource_name"></h1>
+            <span id="resource_description"></span> <a href="#" id="edit">Edit</a>
+
+
+            <table width="100%" style="margin-top:10px">
+
+            <tr>
+            <td valign="top">
+            <div class="dashbox">
+            <h3>Rules compliance</h3>
+            <div class="big">
+            <a href='' id='l_violations_density' target="_blank"><span id='m_violations_density'></span></a></div>
+
+            <div class="mandatory">
+            <a class="tip" href="" id="l_chart" target="_blank">
+            <img width="140" height="110" src="" id="chart">
+            <span>
+            <table>
+            <tr>
+            <td align="left" nowrap>Efficiency &nbsp;</td>
+
+            <td align="right" id="m_efficiency"></td>
+            <td nowrap> &nbsp;</td>
+            </tr>
+            <tr>
+            <td align="left" nowrap>Maintainability  &nbsp;</td>
+            <td align="right" id="m_maintainability"></td>
+            <td nowrap> &nbsp;</td>
+            </tr>
+            <tr>
+            <td align="left" nowrap>Portability  &nbsp;</td>
+            <td align="right" id="m_portability"></td>
+
+            <td nowrap> &nbsp;</td>
+            </tr>
+            <tr>
+            <td align="left" nowrap>Reliability  &nbsp;</td>
+            <td align="right" id="m_reliability"></td>
+            <td nowrap> &nbsp;</td>
+            </tr>
+            <tr>
+            <td align="left" nowrap>Usability  &nbsp;</td>
+            <td align="right" id="m_usability"></td>
+            <td nowrap> &nbsp;</td>
+
+            </tr>
+            </table>
+            </span>
+            </a>
+            </div>
+            </div>
+            </td>
+            <td width="10"> </td>
+            <td valign="top">
+            <div class="dashbox">
+            <h3>Violations</h3>
+            <div class="big">
+            <a href='' id='lv_violations' target="_blank"><span id='m_violations' class=''></span></a> </div>
+
+            <table>
+            <tr>
+            <td><img alt="Blocker" src="" class="blocker" /></td>
+            <td> &nbsp;<a href="" id='lv_blocker_violations' target="_blank">Blocker</a></td>
+            <td style="padding-left: 10px;" align="right">
+            <span id='m_blocker_violations' class=''></span></td>
+            <td width="1%"></td>
+            <td align="left" style="padding-bottom:2px; padding-top:2px;">
+
+            </td>
+            </tr>
+            <tr>
+            <td><img alt="Critical" src="" class="critical" /></td>
+
+            <td> &nbsp;<a href="" id='lv_critical_violations' target="_blank">Critical</a></td>
+            <td style="padding-left: 10px;" align="right">
+            <span id='m_critical_violations' class=''></span></td>
+            <td width="1%"></td>
+            <td align="left" style="padding-bottom:2px; padding-top:2px;">
+
+            </td>
+            </tr>
+            <tr>
+            <td><img alt="Major" src="" class="major" /></td>
+            <td> &nbsp;<a href="" id='lv_major_violations' target="_blank">Major</a></td>
+            <td style="padding-left: 10px;" align="right">
+
+            <span id='m_major_violations' class=''></span></td>
+            <td width="1%"></td>
+            <td align="left" style="padding-bottom:2px; padding-top:2px;">
+
+            </td>
+            </tr>
+            <tr>
+            <td><img alt="Minor" src="" class="minor" /></td>
+            <td> &nbsp;<a href="" id='lv_minor_violations' target="_blank">Minor</a></td>
+            <td style="padding-left: 10px;" align="right">
+            <span id='m_minor_violations' class=''></span></td>
+            <td width="1%"></td>
+            <td align="left" style="padding-bottom:2px; padding-top:2px;">
+
+            </td>
+            </tr>
+            <tr>
+            <td><img alt="Info" src="" class="info"/></td>
+            <td> &nbsp;<a href="" id='lv_info_violations' target="_blank">Info</a></td>
+            <td style="padding-left: 10px;" align="right">
+            <span id='m_info_violations' class=''></span></td>
+            <td width="1%"></td>
+            <td align="left" style="padding-bottom:2px; padding-top:2px;">
+
+            </td>
+            </tr>
+            </table>
+
+            </div>
+            </td>
+            </tr>
+            </table>
+            </div>
+            <div id="preferences" style="display:none;">
+                <form>
+                    <fieldset>
+                        <label for="id_url">Sonar Server: </label>
+                        <span class="help">e.g.: http://sonar.exoplatform.org/</span>
+                        <input type="text" name="url" id="id_url" />
+
+                        <label for="id_project" style="margin-top:10px">Project</label>
+                        <div><select name="project" id="id_project"></select></div>
+                    </fieldset>
+                    <input type="submit" value="Save" />
+                </form>
+                <div id="footer">
+                    <a href="http://www.exoplatform.com" style="float:left;"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
+                </div>
+            </div>
+
+		</div>
+	]]>
+   </Content>
+</Module>
