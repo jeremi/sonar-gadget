@@ -41,7 +41,6 @@
 		<script type="text/javascript">
             function update_metrics() {
                 sonar.GetMetrics("ncloc,lines,classes,packages,functions,accessors", function(res) {
-                    console.log(res);
                     var resource = res.data[0];
                     var prefs = new gadgets.Prefs();
                     var sonar_url = prefs.getString("sonar_url");

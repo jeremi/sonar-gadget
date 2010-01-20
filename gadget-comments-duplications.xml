@@ -44,7 +44,6 @@
                 metrics += ",commented_out_code_lines,duplicated_lines_density,duplicated_lines,duplicated_blocks,duplicated_files";
 
                 sonar.GetMetrics(metrics, function(res) {
-                    console.log(res);
                     var resource = res.data[0];
                     var prefs = new gadgets.Prefs();
                     var sonar_url = prefs.getString("sonar_url");
@@ -93,10 +92,10 @@
                 <div class="dashbox">
                 <h3>Comments</h3>
                 <p><span class="big"><a href='' id="l_comment_lines_density" target="_blank"><span id='m_comment_lines_density' class=''></span></a></span></p> 
-                <p><a href='' id="l_comment_lines" target="_blank"><span id='m_comment_lines' class=''></span> lines</a> <img src="" id="t_comment_lines" /></p>
-                <p><a href='' id="l_public_documented_api_density" target="_blank"><span id='m_public_documented_api_density'></span> docu. API</a> </p>
-                <p><a href='' id='l_public_undocumented_api' target="_blank"><span id='m_public_undocumented_api'>4,243</span> undocu. API</a> <img alt="2-red-small" src="" id="t_public_undocumented_api" /></p>
-                <p><a href='' id='l_commented_out_code_lines' target="_blank"><span id='m_commented_out_code_lines'></span> commented LOCs</a> <img alt="-2-green-small" src="" id='t_commented_out_code_lines'/></p>
+                <p><a href='' id="l_comment_lines" target="_blank"><span id='m_comment_lines' class=''></span> lines</a> <img src="" id="t_comment_lines" style="display:none;"/></p>
+                <p><a href='' id="l_public_documented_api_density" target="_blank"><span id='m_public_documented_api_density'></span> docu. API</a> <img src="" id="t_public_documented_api_density" style="display:none;" /></p>
+                <p><a href='' id='l_public_undocumented_api' target="_blank"><span id='m_public_undocumented_api'>4,243</span> undocu. API</a> <img src="" id="t_public_undocumented_api" style="display:none;" /></p>
+                <p><a href='' id='l_commented_out_code_lines' target="_blank"><span id='m_commented_out_code_lines'></span> commented LOCs</a> <img src="" id='t_commented_out_code_lines' style="display:none;"/></p>
                 </div>
 
                 </td>
@@ -106,9 +105,9 @@
                 <div class="dashbox">
                 <h3>Duplications</h3>
                 <p><span class="big"><a href='' id='l_duplicated_lines_density' target="_blank"><span id='m_duplicated_lines_density' class=''></span></a> </span></p>
-                <p><a href='' id='l_duplicated_lines' target="_blank"><span id='m_duplicated_lines' class=''></span> lines</a> <img src="" id="t_duplicated_lines"/></p>
-                <p><a href='' id='l_duplicated_blocks' target="_blank"><span id='m_duplicated_blocks' class=''></span> blocks</a> <img src="" id='t_duplicated_blocks' /></p>
-                <p><a href='' id='l_duplicated_files' target="_blank"><span id='m_duplicated_files' class=''></span> files</a> <img src="" id='t_duplicated_files' /></p>
+                <p><a href='' id='l_duplicated_lines' target="_blank"><span id='m_duplicated_lines' class=''></span> lines</a> <img src="" id="t_duplicated_lines" style="display:none;" /></p>
+                <p><a href='' id='l_duplicated_blocks' target="_blank"><span id='m_duplicated_blocks' class=''></span> blocks</a> <img src="" id='t_duplicated_blocks' style="display:none;" /></p>
+                <p><a href='' id='l_duplicated_files' target="_blank"><span id='m_duplicated_files' class=''></span> files</a> <img src="" id='t_duplicated_files' style="display:none;" /></p>
                 </div>
 
 
