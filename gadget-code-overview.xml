@@ -50,8 +50,8 @@
                         var metric = resource.msr[i];
                         $("#m_" + metric.key).text(metric.frmt_val);
                         $("#l_" + metric.key).attr("href", sonar_url + "drilldown/measures/" + resource.id + "?metric=" + metric.key);
-                        if (metric.var != 0) {
-                            $("#t_" + metric.key).attr("src", sonar_url + "images/tendency/" + metric.var + "-black-small.png");
+                        if (metric["var"] != 0) {
+                            $("#t_" + metric.key).attr("src", sonar_url + "images/tendency/" + metric["var"] + "-black-small.png");
                             $("#t_" + metric.key).show();
                         } else {
                             $("#t_" + metric.key).hide();
@@ -65,7 +65,7 @@
 
 		    $(function() {
 		        $("#preferences").bind("finish_edit", function(){update_metrics();});
-		        
+
 		        var prefs = new gadgets.Prefs();
 		        $("#edit").click(sonar.EditPreferences);
 		        
@@ -122,9 +122,9 @@
                     </fieldset>
                     <input type="submit" value="Save" />
                 </form>
-            </div>
-            <div id="footer" style="border-top:1px #C3C3C3 solid;">
-                <a href="http://www.exoplatform.com" style="float:left;"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
+                <div id="footer">
+                    <a href="http://www.exoplatform.com" style="float:left;"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
+                </div>
             </div>
 		</div>
 	]]>

@@ -1,3 +1,5 @@
+/*jslint white:false, undef:false */
+
 var sonar = document.sonar || {};
 
 sonar.LoadProjects = function(sonar_url_or_callback, callback) {
@@ -17,33 +19,31 @@ sonar.LoadProjects = function(sonar_url_or_callback, callback) {
 };
 
 sonar.GetMetrics = function(metrics, callback, extras) {
-    var prefs = new gadgets.Prefs(), params = {}, url;
+    var prefs = new gadgets.Prefs(), params = {}, url, key;
     url = prefs.getString("sonar_url") + "api/resources?format=json&resource=" + prefs.getString("sonar_project") + "&metrics=" + metrics + "&time=" + new Date().getTime();
 
     for (key in extras) {
-        url = url + "&" + key + "=" + extras[key]
+        url = url + "&" + key + "=" + extras[key];
     }
 
     params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
     gadgets.io.makeRequest(url, callback, params);
-}
+};
 
 sonar.EditPreferences = function() {
+	var prefs = new gadgets.Prefs(), old_url;
     $("#preferences").show();
     $("#body").hide();
 
     //Update the list of project if the url has changed
-    var old_url;
     $("#id_url").focus(function() {
         old_url = $("#id_url").val();
     });
     $("#id_url").blur(function() {
-        if (old_url != $("#id_url").val()) {
+        if (old_url !== $("#id_url").val()) {
             sonar.UpdateProjectList($("#id_url").val());
         }
     });
-
-    var prefs = new gadgets.Prefs();
 
     $("form").submit(function() {
         sonar.SavePreferences();
@@ -51,7 +51,7 @@ sonar.EditPreferences = function() {
         $("#body").show();
         $("#preferences").trigger("finish_edit");
         return false;
-    })
+    });
 
     $("#id_url").val(prefs.getString("sonar_url"));
     sonar.UpdateProjectList();
@@ -65,7 +65,7 @@ sonar.SavePreferences = function() {
 
     //We check if the url given is valid, if not, we don't save
     sonar.LoadProjects(sonar_url, function(res) {
-        if (res.rc != 200) {
+        if (res.rc !== 200) {
             $("#id_url").css("border-color", "red");
             $("#id_project").empty();
             return;
@@ -85,17 +85,17 @@ sonar.UpdateProjectList = function(sonar_url) {
     }
     else {
         sonar.LoadProjects(sonar_url, function(res) {
-            if (res.rc != 200) {
+            if (res.rc !== 200) {
                 $("#id_url").css("border-color", "red");
                 $("#id_project").empty();
                 return;
             }
             $("#id_url").css("border-color", "");
             var options = [],
-                project = prefs.getString("sonar_project");
-            for (var i = 0; i < res.data.length; i++) {
+                project = prefs.getString("sonar_project"), i;
+            for (i = 0; i < res.data.length; i += 1) {
                 options.push('<option value="', res.data[i].key,  '"');
-                if (res.data[i].key == project) {
+                if (res.data[i].key === project) {
                     options.push(' selected="selected"');
                 }
                 options.push('>', res.data[i].name, "</option>");
