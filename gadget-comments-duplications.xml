@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright (C) 2009 eXo Platform SAS.
+
+    This is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation; either version 2.1 of
+    the License, or (at your option) any later version.
+
+    This software is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this software; if not, write to the Free
+    Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+    02110-1301 USA, or see the FSF site: http://www.fsf.org.
+
+-->
+<Module>
+    <ModulePrefs author="Jeremi Joslin - eXo Platform"
+                 title="Sonar - Comments and Duplication"
+                 directory_title="Sonar - Comments and Duplication"
+                 title_url="http://www.exoplatform.com"
+                 description="Sonar gadget.">
+
+        <Require feature="dynamic-height" />
+        <Require feature="setprefs"/>
+        <Require feature="settitle"/>
+    </ModulePrefs>
+    <UserPref name="sonar_url" datatype="string" default_value="http://sonar.exoplatform.org/"/>
+    <UserPref name="sonar_project" datatype="string"/>
+    <UserPref name="is_configured" datatype="hidden" default_value="0"/>
+    <Content type="html">
+      <![CDATA[
+        <link href="style.css" media="all" rel="stylesheet" type="text/css" />
+	    <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="sonar.js"></script>
+		<script type="text/javascript">
+            function update_metrics() {
+                var metrics = "comment_lines_density,comment_lines,public_documented_api_density,public_undocumented_api";
+                metrics += ",commented_out_code_lines,duplicated_lines_density,duplicated_lines,duplicated_blocks,duplicated_files";
+
+                sonar.GetMetrics(metrics, function(res) {
+                    console.log(res);
+                    var resource = res.data[0];
+                    var prefs = new gadgets.Prefs();
+                    var sonar_url = prefs.getString("sonar_url");
+                    $("#resource_name").text(resource.name);
+                    $("#resource_description").text(resource.description);
+                    for (var i = 0; i < resource.msr.length; i++) {
+                        var metric = resource.msr[i];
+                        $("#m_" + metric.key).text(metric.frmt_val);
+                        $("#l_" + metric.key).attr("href", sonar_url + "drilldown/measures/" + resource.id + "?metric=" + metric.key);
+                        if (metric.var != 0) {
+                            $("#t_" + metric.key).attr("src", sonar_url + "images/tendency/" + metric.var + "-black-small.png");
+                            $("#t_" + metric.key).show();
+                        } else {
+                            $("#t_" + metric.key).hide();
+                        }
+                    }
+                    gadgets.window.adjustHeight($(document).height());
+                }, {includetrends: "true"});
+            }
+
+
+
+		    $(function() {
+		        $("#preferences").bind("finish_edit", function(){update_metrics();});
+
+		        var prefs = new gadgets.Prefs();
+		        $("#edit").click(sonar.EditPreferences);
+
+		        if (prefs.getString("is_configured") === "0"){
+                    sonar.EditPreferences();
+                } else {
+                    update_metrics();
+                }
+             });
+		</script>
+		<div id="container">
+            <div id="body">
+            <h1 id="resource_name"></h1>
+            <span id="resource_description"></span> <a href="#" id="edit">Edit</a>
+
+
+            <table width="100%" style="margin-top:10px">
+                <tr>
+                <td valign="top" width="48%" nowrap>
+
+                <div class="dashbox">
+                <h3>Comments</h3>
+                <p><span class="big"><a href='' id="l_comment_lines_density" target="_blank"><span id='m_comment_lines_density' class=''></span></a></span></p> 
+                <p><a href='' id="l_comment_lines" target="_blank"><span id='m_comment_lines' class=''></span> lines</a> <img src="" id="t_comment_lines" /></p>
+                <p><a href='' id="l_public_documented_api_density" target="_blank"><span id='m_public_documented_api_density'></span> docu. API</a> </p>
+                <p><a href='' id='l_public_undocumented_api' target="_blank"><span id='m_public_undocumented_api'>4,243</span> undocu. API</a> <img alt="2-red-small" src="" id="t_public_undocumented_api" /></p>
+                <p><a href='' id='l_commented_out_code_lines' target="_blank"><span id='m_commented_out_code_lines'></span> commented LOCs</a> <img alt="-2-green-small" src="" id='t_commented_out_code_lines'/></p>
+                </div>
+
+                </td>
+                <td width="10"> </td>
+                <td valign="top">
+
+                <div class="dashbox">
+                <h3>Duplications</h3>
+                <p><span class="big"><a href='' id='l_duplicated_lines_density' target="_blank"><span id='m_duplicated_lines_density' class=''></span></a> </span></p>
+                <p><a href='' id='l_duplicated_lines' target="_blank"><span id='m_duplicated_lines' class=''></span> lines</a> <img src="" id="t_duplicated_lines"/></p>
+                <p><a href='' id='l_duplicated_blocks' target="_blank"><span id='m_duplicated_blocks' class=''></span> blocks</a> <img src="" id='t_duplicated_blocks' /></p>
+                <p><a href='' id='l_duplicated_files' target="_blank"><span id='m_duplicated_files' class=''></span> files</a> <img src="" id='t_duplicated_files' /></p>
+                </div>
+
+
+                </td>
+                </tr>
+            </table>
+            </div>
+            <div id="preferences" style="display:none;">
+                <form>
+                    <fieldset>
+                        <label for="id_url">Sonar Server: </label>
+                        <span class="help">e.g.: http://sonar.exoplatform.org/</span>
+                        <input type="text" name="url" id="id_url" />
+
+                        <label for="id_project" style="margin-top:10px">Project</label>
+                        <div><select name="project" id="id_project"></select></div>
+                    </fieldset>
+                    <input type="submit" value="Save" />
+                </form>
+            </div>
+            <div id="footer" style="border-top:1px #C3C3C3 solid;">
+                <a href="http://www.exoplatform.com" style="float:left;"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
+            </div>
+		</div>
+	]]>
+   </Content>
+</Module>
