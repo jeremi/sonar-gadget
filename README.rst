@@ -21,3 +21,10 @@ The gadgets have been tested in (it doesn't mean it doesn't work in other config
     * GateIn
     * Jira 4
 
+Using the gadget
+================
+
+You can take the code and install it on your own servers. This gadgets does not require any backend except the sonar server.
+
+You can use our gadget repository on appengine. They will be updated with the new releases :
+http://exogadgets.appspot.com/
