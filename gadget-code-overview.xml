@@ -35,9 +35,10 @@
     <UserPref name="is_configured" datatype="hidden" default_value="0"/>
     <Content type="html">
       <![CDATA[
-        <link href="style.css" media="all" rel="stylesheet" type="text/css" />
-	    <script type="text/javascript" src="jquery.js"></script>
-        <script type="text/javascript" src="sonar.js"></script>
+        <link href="http://exogadgets.appspot.com/static/sonar/style.css" media="all" rel="stylesheet" type="text/css" />
+		<!-- use the full URL because Jira does not rewrite them -->
+	    <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
+        <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/sonar.js"></script>
 		<script type="text/javascript">
             function update_metrics() {
                 sonar.GetMetrics("ncloc,lines,classes,packages,functions,accessors", function(res) {
@@ -97,7 +98,7 @@
                 <div class="dashbox">
 
                 <h3>Classes</h3>
-                <p><span class="big"><a href='' id='l_classes'><span id='m_classes' class=''></span></a><img src="" id="t_classes" style="display:none;"/></p>
+                <p><span class="big"><a href='' id='l_classes' target="_blank"><span id='m_classes' class=''></span></a><img src="" id="t_classes" style="display:none;"/></p>
                 <p><a href='' id='l_packages' target="_blank"><span id='m_packages' class=''></span> packages</a><img src="" id="t_packages" style="display:none;"/></p>
 
                 <p><a href='' id='l_functions' target="_blank"><span id='m_functions' class=''></span> methods</a><img src="" id="t_functions" style="display:none;"/></p>
@@ -123,7 +124,7 @@
                     <input type="submit" value="Save" />
                 </form>
                 <div id="footer">
-                    <a href="http://www.exoplatform.com" style="float:left;"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
+                    <a href="http://www.exoplatform.com" style="float:left;" target="_blank"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
                 </div>
             </div>
 		</div>

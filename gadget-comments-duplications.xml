@@ -35,9 +35,10 @@
     <UserPref name="is_configured" datatype="hidden" default_value="0"/>
     <Content type="html">
       <![CDATA[
-        <link href="style.css" media="all" rel="stylesheet" type="text/css" />
-	    <script type="text/javascript" src="jquery.js"></script>
-        <script type="text/javascript" src="sonar.js"></script>
+        <link href="http://exogadgets.appspot.com/static/sonar/style.css" media="all" rel="stylesheet" type="text/css" />
+		<!-- use the full URL because Jira does not rewrite them -->
+	    <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
+        <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/sonar.js"></script>
 		<script type="text/javascript">
             function update_metrics() {
                 var metrics = "comment_lines_density,comment_lines,public_documented_api_density,public_undocumented_api";
@@ -128,7 +129,7 @@
                     <input type="submit" value="Save" />
                 </form>
                 <div id="footer">
-                    <a href="http://www.exoplatform.com" style="float:left;"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
+                    <a href="http://www.exoplatform.com" style="float:left;" target="_blank"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
                 </div>
             </div>
 		</div>

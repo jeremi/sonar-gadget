@@ -35,9 +35,10 @@
     <UserPref name="is_configured" datatype="hidden" default_value="0"/>
     <Content type="html">
       <![CDATA[
-        <link href="style.css" media="all" rel="stylesheet" type="text/css" />
-	    <script type="text/javascript" src="jquery.js"></script>
-        <script type="text/javascript" src="sonar.js"></script>
+        <link href="http://exogadgets.appspot.com/static/sonar/style.css" media="all" rel="stylesheet" type="text/css" />
+		<!-- use the full URL because Jira does not rewrite them -->
+	    <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
+        <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/sonar.js"></script>
 		<script type="text/javascript">
             function update_metrics() {
                 var metrics = "coverage,line_coverage,branch_coverage,tests,test_execution_time";
@@ -91,11 +92,11 @@
 
                 <div class="dashbox">
                 <h3>Code coverage</h3>
-                    <p><span class="big"><a href='' id='l_coverage'><span id='m_coverage'></span></a> <img src="" id='t_coverage' style="display:none;" /></span></p>
-                    <p><a href='' id='l_line_coverage'><span id='m_line_coverage'></span> line coverage</a> <img src="" id="t_line_coverage" style="display:none;" /></p>
-                    <p><a href='' id='l_branch_coverage'><span id='m_branch_coverage'></span> branch coverage</a> <img src="" id="t_branch_coverage" style="display:none;" /></p>
-                    <p><a href='' id='l_tests'><span id='m_tests'></span> tests</a> <img src="" id="t_tests" style="display:none;" /></p>
-                    <p><a href='' id='l_test_execution_time'><span id='m_test_execution_time'></span></a> <img src="" id="t_test_execution_time" style="display:none;"/></p>
+                    <p><span class="big"><a href='' id='l_coverage' target="_blank"><span id='m_coverage'></span></a> <img src="" id='t_coverage' style="display:none;" /></span></p>
+                    <p><a href='' id='l_line_coverage' target="_blank"><span id='m_line_coverage'></span> line coverage</a> <img src="" id="t_line_coverage" style="display:none;" /></p>
+                    <p><a href='' id='l_branch_coverage' target="_blank"><span id='m_branch_coverage'></span> branch coverage</a> <img src="" id="t_branch_coverage" style="display:none;" /></p>
+                    <p><a href='' id='l_tests' target="_blank"><span id='m_tests'></span> tests</a> <img src="" id="t_tests" style="display:none;" /></p>
+                    <p><a href='' id='l_test_execution_time' target="_blank"><span id='m_test_execution_time'></span></a> <img src="" id="t_test_execution_time" style="display:none;"/></p>
                 </div>
 
                 </td>
@@ -104,9 +105,9 @@
 
                 <div class="dashbox">
                 <h3>Test success</h3>
-                    <p><span class="big"><a href='' id='l_test_success_density'><span id='m_test_success_density'></span></a></span></p>
-                    <p><a href='' id='l_test_failures'><span id='m_test_failures' class=''></span> failures</a></p>
-                    <p><a href='' id='l_test_errors'><span id='m_test_errors' class=''></span> errors</a></p>
+                    <p><span class="big"><a href='' id='l_test_success_density' target="_blank"><span id='m_test_success_density'></span></a></span></p>
+                    <p><a href='' id='l_test_failures' target="_blank"><span id='m_test_failures' class=''></span> failures</a></p>
+                    <p><a href='' id='l_test_errors' target="_blank"><span id='m_test_errors' class=''></span> errors</a></p>
 
                 </div>
 
@@ -128,7 +129,7 @@
                     <input type="submit" value="Save" />
                 </form>
                 <div id="footer">
-                    <a href="http://www.exoplatform.com" style="float:left;"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
+                    <a href="http://www.exoplatform.com" style="float:left;" target="_blank"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
                 </div>
             </div>
 

@@ -36,7 +36,7 @@
     <Content type="html">
       <![CDATA[
 
-        <link href="style.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="http://exogadgets.appspot.com/static/sonar/style.css" media="all" rel="stylesheet" type="text/css" />
 
         <style>
         #body .tip span {
@@ -48,9 +48,10 @@
             text-decoration:none !important;
         }
         </style>
-
-	    <script type="text/javascript" src="jquery.js"></script>
-        <script type="text/javascript" src="sonar.js"></script>
+		
+		<!-- use the full URL because Jira does not rewrite them -->
+	    <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
+        <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/sonar.js"></script>
 		<script type="text/javascript">
             function update_metrics() {
                 var metrics = "violations_density,efficiency,maintainability,portability,reliability,usability";
@@ -260,7 +261,7 @@
                     <input type="submit" value="Save" />
                 </form>
                 <div id="footer">
-                    <a href="http://www.exoplatform.com" style="float:left;"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
+                    <a href="http://www.exoplatform.com" style="float:left;" target="_blank"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
                 </div>
             </div>
 
