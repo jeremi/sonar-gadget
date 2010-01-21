@@ -36,10 +36,10 @@
     <Content type="html">
       <![CDATA[
         <link href="http://exogadgets.appspot.com/static/sonar/style.css" media="all" rel="stylesheet" type="text/css" />
-		<!-- use the full URL because Jira does not rewrite them -->
-	    <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
+        <!-- use the full URL because Jira does not rewrite them -->
+        <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
         <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/sonar.js"></script>
-		<script type="text/javascript">
+        <script type="text/javascript">
             function update_metrics() {
                 var metrics = "coverage,line_coverage,branch_coverage,tests,test_execution_time";
                 metrics += "test_success_density,test_failures,test_errors";
@@ -67,20 +67,20 @@
 
 
 
-		    $(function() {
-		        $("#preferences").bind("finish_edit", function(){update_metrics();});
+            $(function() {
+                $("#preferences").bind("finish_edit", function(){update_metrics();});
 
-		        var prefs = new gadgets.Prefs();
-		        $("#edit").click(sonar.EditPreferences);
+                var prefs = new gadgets.Prefs();
+                $("#edit").click(sonar.EditPreferences);
 
-		        if (prefs.getString("is_configured") === "0"){
+                if (prefs.getString("is_configured") === "0"){
                     sonar.EditPreferences();
                 } else {
                     update_metrics();
                 }
              });
-		</script>
-		<div id="container">
+        </script>
+        <div id="container">
             <div id="body">
             <h1 id="resource_name"></h1>
             <span id="resource_description"></span> <a href="#" id="edit">Edit</a>
@@ -133,7 +133,7 @@
                 </div>
             </div>
 
-		</div>
-	]]>
+        </div>
+    ]]>
    </Content>
 </Module>

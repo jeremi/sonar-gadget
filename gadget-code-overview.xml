@@ -36,10 +36,10 @@
     <Content type="html">
       <![CDATA[
         <link href="http://exogadgets.appspot.com/static/sonar/style.css" media="all" rel="stylesheet" type="text/css" />
-		<!-- use the full URL because Jira does not rewrite them -->
-	    <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
+        <!-- use the full URL because Jira does not rewrite them -->
+        <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
         <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/sonar.js"></script>
-		<script type="text/javascript">
+        <script type="text/javascript">
             function update_metrics() {
                 sonar.GetMetrics("ncloc,lines,classes,packages,functions,accessors", function(res) {
                     var resource = res.data[0];
@@ -64,20 +64,21 @@
 
 
 
-		    $(function() {
-		        $("#preferences").bind("finish_edit", function(){update_metrics();});
+            $(function() {
+                $("#preferences").bind("finish_edit", function(){update_metrics();});
 
-		        var prefs = new gadgets.Prefs();
-		        $("#edit").click(sonar.EditPreferences);
-		        
-		        if (prefs.getString("is_configured") === "0"){
+                var prefs = new gadgets.Prefs();
+                $("#edit").click(sonar.EditPreferences);
+                
+                if (prefs.getString("is_configured") === "0"){
                     sonar.EditPreferences();
                 } else {
                     update_metrics();   
                 }
              });
-		</script>
-		<div id="container">
+        </script>
+        <div id="container">
+            <!-- our template of code -->
             <div id="body">
             <h1 id="resource_name"></h1>
             <span id="resource_description"></span> <a href="#" id="edit">Edit</a>
@@ -111,6 +112,7 @@
                 </table>
             </div>
 
+            <!-- The template of preferences -->
             <div id="preferences" style="display:none;">
                 <form>
                     <fieldset>
@@ -127,7 +129,7 @@
                     <a href="http://www.exoplatform.com" style="float:left;" target="_blank"><img src="http://www.exoplatform.com/portal/favicon.ico" style="margin-right:5px;"/>eXo Platform</a>
                 </div>
             </div>
-		</div>
-	]]>
+        </div>
+    ]]>
    </Content>
 </Module>

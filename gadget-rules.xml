@@ -48,11 +48,11 @@
             text-decoration:none !important;
         }
         </style>
-		
-		<!-- use the full URL because Jira does not rewrite them -->
-	    <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
+        
+        <!-- use the full URL because Jira does not rewrite them -->
+        <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/jquery.js"></script>
         <script type="text/javascript" src="http://exogadgets.appspot.com/static/sonar/sonar.js"></script>
-		<script type="text/javascript">
+        <script type="text/javascript">
             function update_metrics() {
                 var metrics = "violations_density,efficiency,maintainability,portability,reliability,usability";
                 metrics += ",violations,blocker_violations,critical_violations,major_violations,minor_violations,info_violations";
@@ -110,24 +110,24 @@
 
 
 
-		    $(function() {
-		        $("#preferences").bind("finish_edit", function(){update_metrics();});
+            $(function() {
+                $("#preferences").bind("finish_edit", function(){update_metrics();});
 
                 if (!$.support.cssFloat) {
                     $("a.tip").removeClass("tip");
-		        }
+                }
 
-		        var prefs = new gadgets.Prefs();
-		        $("#edit").click(sonar.EditPreferences);
+                var prefs = new gadgets.Prefs();
+                $("#edit").click(sonar.EditPreferences);
 
-		        if (prefs.getString("is_configured") === "0"){
+                if (prefs.getString("is_configured") === "0"){
                     sonar.EditPreferences();
                 } else {
                     update_metrics();
                 }
              });
-		</script>
-		<div id="container">
+        </script>
+        <div id="container">
             <div id="body">
             <h1 id="resource_name"></h1>
             <span id="resource_description"></span> <a href="#" id="edit">Edit</a>
@@ -265,7 +265,7 @@
                 </div>
             </div>
 
-		</div>
-	]]>
+        </div>
+    ]]>
    </Content>
 </Module>
