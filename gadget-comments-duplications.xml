@@ -24,7 +24,8 @@
                  title="Sonar - Comments and Duplication"
                  directory_title="Sonar - Comments and Duplication"
                  title_url="http://www.exoplatform.com"
-                 description="Sonar gadget.">
+                 description="Sonar gadget."
+                 author_email="jeremi23@gmail.com">
 
         <Require feature="dynamic-height" />
         <Require feature="setprefs"/>
@@ -54,7 +55,7 @@
                         metric = resource.msr[i];
                         $("#m_" + metric.key).text(metric.frmt_val);
                         $("#l_" + metric.key).attr("href", sonar_url + "drilldown/measures/" + resource.id + "?metric=" + metric.key);
-                        if (metric["var"] != 0) {
+                        if (metric["var"]) {
                             $("#t_" + metric.key).attr("src", sonar_url + "images/tendency/" + metric["var"] + "-black-small.png");
                             $("#t_" + metric.key).show();
                         } else {
